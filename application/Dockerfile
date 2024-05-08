@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y git
 
 WORKDIR /app
 
-# Clone the repository into the /app directory
-RUN git clone https://github.com/adds08/optix-material-query .
+# # Clone the repository into the /app directory
+# RUN git clone https://github.com/adds08/optix-material-query .
 
 # Copy requirements file and install dependencies
 COPY requirements.txt requirements.txt
