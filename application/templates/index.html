@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.5/dist/bootstrap-table.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container-fluid text-center my-5 py-5 my-5 py-5">
+      <div class="row py-2">
+        <div class="col-md-12">
+            <div class="input-group">
+                <input id="input" type="text" class="flex-fill mr-2 form-control" placeholder="What items do you want?">
+                <div class="input-group-append">
+                    <button id="submitBtn" class="btn btn-primary" type="button">Submit Word</button>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col-12">
+          <table id="table">
+            <thead>
+              <tr>
+                <th data-formatter="serialNumberFormatter">S.No</th>
+                <th data-field="item">Item Name</th>
+                <th data-field="quantity">Item Quantity</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.5/dist/bootstrap-table.min.js"></script>
+
+    <script>
+      const server = "http://127.0.0.1:5000";
+      async function sendRequest(text) {
+        
+        try {
+          let response = await $.ajax({
+            method: "POST",
+            url: server + "/process",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: JSON.stringify({
+              query: text,
+            }),
+          });
+
+          return response.data;
+        } catch (err) {
+          return [];
+        }
+      }
+      $(document).ready(function () {
+        $("#table").bootstrapTable({});
+        $("#submitBtn").on("click", async (e) => {
+          let response = await sendRequest($("#input").val());
+          $("#table").bootstrapTable("load",response);
+        });
+      });
+
+      function serialNumberFormatter(value,row,index){
+        return index+1;
+      }
+
+    </script>
+  </body>
+</html>
