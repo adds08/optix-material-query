@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, jsonify
 
 from material_processing import extract_noun_chunks
 
+
 # Create a Flask application
 app = Flask(__name__)
 
@@ -22,4 +23,4 @@ def process():
 
 # Run the Flask application
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, port=5000, host="0.0.0.0")
